@@ -187,52 +187,26 @@ void loop()
 
     // Provera da li je prepoznata komanda "hello"
     if (result.classification[2].value > 0.8) {
-        Serial.println("Komanda 'hello' detektovana!");
-
         sensor_active = true; // Aktiviraj senzore
-
-        // // Akcija: Uključi LED
-        // digitalWrite(LED_PIN, HIGH);
-
-        // // Akcija: Uključi zelenu LED, isključi crvenu i plavu
-        // setColor(LOW, HIGH, LOW);
     }
 
     // Provera da li je prepoznata komanda "stop"
     if (result.classification[3].value > 0.8) {
-        Serial.println("Komanda 'stop' detektovana!");
-
         sensor_active = false; // Deaktiviraj senzore
-
-        // // Akcija: Isključi LED
-        // digitalWrite(LED_PIN, LOW);
-
-        // // Akcija: Uključi crvenu LED, isključi zelenu i plavu
-        // setColor(LOW, LOW, HIGH);
     }
 
     // Ako su senzori aktivni, čitaj njihove vrednosti
     if (sensor_active) {
-        // float x, y, z;
-        // if (IMU.readAcceleration(x, y, z)) {
-        //     Serial.print("Akcelerometar: ");
-        //     Serial.print(x);
-        //     Serial.print(", ");
-        //     Serial.print(y);
-        //     Serial.print(", ");
-        //     Serial.println(z);
-        // }
-
         float temperature = HTS.readTemperature();
         float humidity = HTS.readHumidity();
         float pressure = BARO.readPressure();
 
         //Serial.print("Temperatura: ");
         Serial.print(temperature);
-        Serial.print(" ");
+        Serial.print(", ");
         //Serial.print("Pritisak: ");
         Serial.print(pressure);
-        Serial.print(" ");
+        Serial.print(", ");
         //Serial.print("Vlažnost: ");
         Serial.println(humidity);
 
