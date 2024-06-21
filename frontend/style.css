@@ -1,0 +1,93 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 50px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+}
+.card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+}
+.microphone-circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #e0e0e0; 
+}
+.microphone-icon {
+    width: 60px; 
+    height: auto;
+}
+.listening-text {
+    margin-top: 10px;
+    font-size: 16px;
+}
+.thermometer {
+    width: 60px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.thermometer-inner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #00b7ff; 
+    height: 0%;
+    transition: height 0.5s ease;
+}
+.thermometer-text {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.humidity-ring {
+    display: block;
+    margin: 0 auto;
+    position: relative; /* Ensure relative positioning for absolute child elements */
+}
+
+.humidity-ring .outer {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 10;
+}
+
+.humidity-ring .inner {
+    fill: none;
+    stroke: #007bff; /* Blue color for fill */
+    stroke-width: 10;
+    stroke-linecap: round; /* Rounded line ends */
+    transform: rotate(-90deg); /* Start from top */
+    transform-origin: center; /* Rotate around center */
+    transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease; /* Smooth animation */
+}
+
+#humidity-text {
+    fill: #000; /* Black color for text */
+}
+.pressure-icon {
+    max-width: 250px;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+}

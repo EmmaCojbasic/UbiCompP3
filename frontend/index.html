@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UbiComp2</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="microphone-circle">
+            <img class="microphone-icon" src="microphone.png" alt="Microphone Icon">
+        </div>
+        <div id="command">
+            <h2>Arduino is listening...</h2>
+        </div>
+        <div class="card" id="temperature-card">
+            <h2>Temperature</h2>
+            <div class="thermometer">
+                <div class="thermometer-inner" id="temperature-inner"></div>
+                <text id="thermometer-text">27°C</text>
+                <div class="thermometer-text">0°C</div>
+            </div>
+        </div>
+        <div class="card" id="humidity-card">
+            <h2>Humidity</h2>
+            <svg class="humidity-ring" width="150" height="150">
+                <circle class="outer" cx="75" cy="75" r="70"></circle>
+                <circle class="inner" id="humidity-inner" cx="75" cy="75" r="70"></circle>
+                <text id="humidity-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20">0%</text>
+            </svg>
+        </div>
+        <div class="card" id="pressure-card">
+            <h2>Pressure</h2>
+            <img class="pressure-icon" src="image.png" alt="Pressure Icon">
+            <p id="pressure-value">0 Pa</p>
+        </div>
+        <div class="card" id="environment-card">
+            <h2>Environment Status</h2>
+            <div id="environment-status">
+                <p id="environment-value">good</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // JavaScript code goes here
+    </script>
+</body>
+    <script>
+        var socket = io();
+
+        var sampleData = {
+            status: 'good',
+            data: {
+                temperature: 27.5,
+                pressure: 101325,
+                humidity: 35
+            }
+        };
+
+        // Function to handle sample data
+        function handleSampleData(parsedData) {
+            console.log(parsedData);
+
+            // Update command parameters based on the detected command
+            var paramsElement = document.getElementById('command-params');
+            updateTemperature(sampleData.data.temperature);
+            updateHumidity(sampleData.data.humidity);
+            updatePressure(sampleData.data.pressure);
+            updateEnvironment(sampleData.status);
+            document.getElementById('pressure-data').textContent = `Pressure: ${sampleData.data.pressure} hPa`;
+            
+        }
+
+        // Function to update temperature visualization
+        function updateTemperature(temperature) {
+            var thermometerFill = document.getElementById('temperature-inner');
+            var thermometerText = document.querySelector('.thermometer-text');
+            thermometerFill.style.height = `${temperature * 2}%`; // Scale height to match temperature
+            thermometerText.textContent = `${temperature}°C`;
+        }
+
+        // Function to update humidity visualization
+        function updateHumidity(humidity) {
+            var humidityRingInner = document.querySelector('.humidity-ring .inner');
+            var humidityText = document.getElementById('humidity-text');
+            var radius = parseInt(humidityRingInner.getAttribute('r'));
+            var circumference = 2 * Math.PI * radius;
+
+            // Calculate the dash array and dash offset based on humidity
+            var dashArray = circumference;
+            var dashOffset = circumference * (1 - humidity / 100);
+
+            // Set dash array and dash offset
+            humidityRingInner.style.strokeDasharray = dashArray;
+            humidityRingInner.style.strokeDashoffset = dashOffset;
+
+            // Update text content inside the circle
+            humidityText.textContent = `${humidity}%`;
+        }
+
+        function updatePressure(pressure) {
+
+            var pressureText = document.getElementById('pressure-value');
+            pressureText.textContent = `${pressure} Pa`;
+
+        }
+
+        function updateEnvironment(environment) {
+            
+            var envText = document.getElementById('environment-value');
+            envText.textContent = `${environment}`;
+            if (environment === "good") {
+                envText.style.color = "green";
+            } else {
+                envText.style.color = "red";
+            }
+            envText.style.fontSize = "44px";
+        }
+
+        // Call the function to simulate handling of sample data
+        handleSampleData(sampleData);
+
+        // Uncomment the following if you want to simulate WebSocket data reception
+        socket.on('data', function(data){
+            var parsedData = JSON.parse(data); // Assuming data is JSON formatted
+            handleSampleData(parsedData);
+        });
+        
+    </script>
+</body>
+</html>

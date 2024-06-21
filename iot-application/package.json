@@ -1,0 +1,15 @@
+{
+  "name": "iot-application",
+  "version": "1.0.0",
+  "description": "iot application subscribed to mqtt topic and writing data to influxdb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.33.2",
+    "mqtt": "^5.7.0"
+  }
+}

@@ -1,0 +1,45 @@
+version: "1.0"
+
+services:
+  emqx:
+    image: emqx:latest
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    ports:
+      - 1883:1883
+
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - 8086:8086
+    healthcheck:
+      test: "curl -f http://localhost:8086/ping"
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - influxdb_storage:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana-provisioning/:/etc/grafana/provisioning
+    depends_on:
+      influxdb:
+        condition: service_healthy
+
+  iot-application:
+    build:
+      context: ./iot-application
+      dockerfile: ./Dockerfile
+    depends_on:
+      emqx:
+        condition: service_healthy
+
+volumes:
+  influxdb_storage:
